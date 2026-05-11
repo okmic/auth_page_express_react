@@ -1,0 +1,15 @@
+services:
+  mongodb:
+    image: mongo:6
+    container_name: auth_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: auth_page
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+volumes:
+  mongodb_data:
