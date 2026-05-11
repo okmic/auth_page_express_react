@@ -2,14 +2,16 @@ import { Schema, model, Model } from 'mongoose'
 
 export type UserRoleEnum = "Admin" | "User"
 
-export type IUser = {
+export interface IUser extends Document {
     createdAt: Date
+    _id: string
     name: string
     email: string
     psw: string
     role: UserRoleEnum
     isActive: boolean
 }
+
 
 const UserSchema = new Schema<IUser>({
   createdAt: { type: Date, default: Date.now },

@@ -15,4 +15,5 @@ export default {
     mongoDBName: valueOrError('MONGODB_DATABASE'),
     mode: process.env.NODE_ENV || 'development',
     jwtSecret: valueOrError('JWT_SECRET'),
+    rootSecret: valueOrError('ROOT_SECRET'),
 };

@@ -10,7 +10,9 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
         if (!token) {
             return sendError(res, "No token provided", 401);
         }
-        jwt.verify(token, appConfig.jwtSecret)
+        const payload = jwt.verify(token, appConfig.jwtSecret)
+
+        req.user = payload
         return next()
     } catch (e) {
         return sendError(res, "Forbidden", 403)
