@@ -32,7 +32,6 @@ import { initializeDatabase } from '../modules/database/database.init';
                 ═══════════════════════════════════════════════════════
             `)
         })
-
     } catch (error) {
         logger.error("Failed to start", {
             errorModule: "CORE_STARTUP",
