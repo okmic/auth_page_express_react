@@ -5,10 +5,11 @@ import errorMiddleware from "../libs/middlewares/error.middleware";
 import CheckHealthModule from "../modules/сheckhealth/checkhealth.module";
 import { setupGlobalErrorHandlers } from '../utils/error.handler';
 import { logger } from '../modules/logger/logger.service';
-import authMiddleware from '../libs/middlewares/auth.middleware';
+import { authMiddleware } from '../libs/middlewares/auth.middleware';
 import { loggingMiddleware } from '../libs/middlewares/logging.middleware';
 import { initializeDatabase } from '../modules/database/database.init';
 import SignModule from '../modules/sign/sign.module';
+import UserModule from '../modules/user/user.module';
 
 (async () => {
     try {
@@ -19,9 +20,10 @@ import SignModule from '../modules/sign/sign.module';
         app.use(cors());
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
-        app.use(authMiddleware);
         new CheckHealthModule(app);
-        new SignModule(app)
+        new SignModule(app);
+        app.use(authMiddleware);
+        new UserModule(app);
         app.use(errorMiddleware);
 
         app.listen(appConfig.PORT, (error) => {

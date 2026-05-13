@@ -21,3 +21,4 @@ infrastructure/data
 logs
 grafana
 infrastructure/mongodb_data
+client/node_modules

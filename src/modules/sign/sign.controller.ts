@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express"
 import { sendSuccess } from "../../utils/response"
-import { signService } from "./sign.service"
+import signService from "./sign.service"
+import signUtil from "./sign.util"
+import signAdminService from "./admin/sign.admin.service"
 
 class SignController {
 
@@ -9,10 +11,10 @@ class SignController {
         if (!email || !psw) throw new Error("Invalid credentials")
 
         const user = await signService.login(email, psw)
-        const tokens = signService.generateTokens(user._id, user.role)
+        const tokens = signUtil.generateTokens(user._id, user.role)
 
-        await signService.saveRefreshToken(tokens.refreshToken)
-        res.cookie('refreshToken', tokens.refreshToken, signService.getCookieOptions())
+        await signUtil.saveRefreshToken(tokens.refreshToken)
+        res.cookie('refreshToken', tokens.refreshToken, signUtil.getCookieOptions())
 
         return sendSuccess(res, {
             ...tokens,
@@ -21,14 +23,14 @@ class SignController {
     }
 
     async signup(req: Request, res: Response, next: NextFunction) {
-        const { name, email, psw, role, rootSecret } = req.body
+        const { name, email, psw } = req.body
         if (!name || !email || !psw) throw new Error("Missing required fields")
 
-        const user = await signService.registration({ name, email, psw, role: role || "User" }, { userId: req.user?.userId, })
-        const tokens = signService.generateTokens(user._id, user.role)
+        const user = await signService.registration({ name: name as string, email: email as string, psw: psw as string, role: "User" })
+        const tokens = signUtil.generateTokens(user._id, user.role)
 
-        await signService.saveRefreshToken(tokens.refreshToken)
-        res.cookie('refreshToken', tokens.refreshToken, signService.getCookieOptions())
+        await signUtil.saveRefreshToken(tokens.refreshToken)
+        res.cookie('refreshToken', tokens.refreshToken, signUtil.getCookieOptions())
 
         return sendSuccess(res, {
             ...tokens,
