@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs'
 import { IUser, User } from '../../../models/user.model'
 import { ErrorBadRequest } from '../../../utils/errors'
 
@@ -9,9 +10,11 @@ class SignAdminService {
 
     const existingUser = await User.findOne({ email: data.email })
     if (existingUser) throw new ErrorBadRequest("User already exists")
+    const hashedPassword = await bcrypt.hash(data.psw, 12)
     
     return await User.create({
       ...data,
+      psw: hashedPassword,
       isActive: true,
     })
   }
