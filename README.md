@@ -1,34 +1,35 @@
-# Cкрипт запуска на проде через pm2 (base)
-mkdir /apps
-mkdir /apps/auth_page
-cd /apps/auth_page
+# 🔐 Auth Page
+## Полноценное приложение с аутентификацией и администрированием пользователей. Тёмная тема, стеклянный дизайн, плавные анимации.
 
-APP="http"
-APP_PATH="build/entrypoints/http.js"
+## ✨ Возможности
 
-MAX_MEMORY="4096"
-git reset --hard HEAD
-npm i
-npm run build
-cp .env build/
+- **Регистрация и вход** — безопасная аутентификация с хешированием паролей
+- **Ролевая система** — роли `Admin` и `User` с разным уровнем доступа
+- **Админ-панель** — управление пользователями, создание новых, переключение статусов
+- **Личный кабинет** — просмотр информации о своём профиле
+- **Современный UI** — Tailwind CSS, эффекты стекла, адаптивная вёрстка
 
-pm2 delete $APP 2>/dev/null
+## 🛠 Технологии
 
-pm2 start $APP \
-    --name "$SERVICE1_NAME" \
-    --max-memory-restart 1G \
-    --node-args="--max-old-space-size=$MAX_MEMORY" \
+| Слой | Технологии |
+|------|-----------|
+| **Frontend** | React, TypeScript, Tailwind CSS, Redux Toolkit |
+| **Backend** | Node.js, Express, TypeScript |
+| **База данных** | MongoDB, Mongoose |
+| **Безопасность** | bcrypt |
+| **Инфраструктура** | Docker, PM2 |
 
+# Dev запуск
+### В папке infrastructure находится файл docker-compose.dev.yaml, который запускает MongoDB.
+### Необходимо создать и заполнить файл .env по образцу из src/libs/config/appConfig.ts.
+### В корневой папке после установки проекта сервер в dev режиме запускается скриптом yarn server:dev или npm run server:dev.
+### Также в корневой папке находится клиент на React в папке client. Необходимо установить зависимости, создать и заполнить файл client/src/appconfig.ts по образцу:
 
-pm2 startup
-pm2 save
+export default { backendUrl: "http://localhost:порт_бэкенда" }
 
-# Dev запуск 
-## В папке infrastructure находится файл docker-compose.dev.yaml который запускает mongo
-## Необходимо создать и заполнить файл .env по образцу src/libs/config/appConfig.ts
-## В корневой папке, после инстроляции проекта сервер в dev режиме запускается скриптом yarn/npm server:dev 
-## Также в корневой папке находится клиент на React в папке client, также необходимо проинстолировать и создать и заполнить файл client/src/appconfig.ts по образцу --> export default {backendUrl: "http://localhost:порт_бэкенда",} далее проинсталировать и запустить проект
+### Далее установить зависимости и запустить проект.
 
-# Уже предсозданный юзер с ролью Admin:
+# Уже предсозданный пользователь с ролью Admin:
 ## email: admin@admin.admin
 ## password: password
+### В корне есть файл с демонстрацией работы форм регистрации — LOOKME.mp4
