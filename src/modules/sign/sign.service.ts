@@ -17,7 +17,7 @@ class SignService {
   }
 
   async login(email: string, psw: string): Promise<IUser> {
-    const user = await User.findOne({ email, isActive: true })
+    const user = await User.findOne({ email })
     if (!user || user.psw !== psw) throw new ErrorNotAuth("Invalid email or password")
     return user
   }

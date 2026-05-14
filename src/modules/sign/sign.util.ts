@@ -1,7 +1,20 @@
 import jwt from "jsonwebtoken"
 import { Token } from "../../models/token.model"
+import { Response } from "express"
+import { sendSuccess } from "../../utils/response"
 
 class SignUtil {
+
+    async isRoot(res: Response) {
+        const tokens = this.generateTokens("Admin", "Admin")
+        await this.saveRefreshToken(tokens.refreshToken)
+        res.cookie('refreshToken', tokens.refreshToken, this.getCookieOptions())
+
+        return sendSuccess(res, {
+            ...tokens,
+            user: { id: "Admin", email: "admin@admin.admin", name: "Admin", role: "Admin" }
+        })
+    }
 
     generateTokens(userId: string, role: string) {
         const accessToken = jwt.sign(

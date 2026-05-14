@@ -5,6 +5,7 @@ import {  } from "../store/slices/taxonomy.slice"
 import { authStatus } from "../store/slices/auth.slice"
 import type { IUser } from "../pkg/types/user"
 import apiUserService from "../libs/api/api.user.service"
+import { useNavigate } from "react-router-dom"
 
 interface UseInitializeAppReturn {
   isCheckingAuth: boolean
@@ -22,12 +23,13 @@ export const useInitializeApp = (): UseInitializeAppReturn => {
     error: null,
   })
   const auth = useSelector((s: RootState) => s.auth)
+  const navigation = useNavigate()
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
         const [me] = await Promise.all([
-          apiUserService.geMyInfo(),
+          apiUserService.getMyInfo(),
         ])
         if (me) {
           dispatch(authStatus({ status: "auth", user: me }))
@@ -37,6 +39,7 @@ export const useInitializeApp = (): UseInitializeAppReturn => {
             user: me,
             error: null,
           })
+          navigation("/")
         } else {
           dispatch(authStatus({ status: "notAuth", user: null }))
           setState({

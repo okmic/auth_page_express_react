@@ -208,7 +208,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
             disabled={isLoading}
-            placeholder="example@ponial.ru"
+            placeholder="example@mail.ru"
             className={`
               w-full px-6 py-4 rounded-full
               font-medium text-[#F5F0E8] placeholder-[#F5F0E8]/40
